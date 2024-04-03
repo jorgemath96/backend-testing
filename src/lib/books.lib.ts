@@ -1,3 +1,6 @@
+import { Book } from "../../types";
+import books from "../database/MOCK_DATA";
+
 export const checkPrice = (price: string) => {
   // Verify that price contains only numbers (price is intger or float)
   return /^\d+(\.\d+)?$/.test(price);
@@ -19,17 +22,26 @@ export const checkBook = (book: any) => {
     "stars",
     "description",
   ];
-  let sum: number = 0
+  let sum: number = 0;
   for (let a in book) {
     if (keys.includes(a)) {
-      sum = sum +1
+      sum = sum + 1;
     }
   }
   return keys.length === sum;
 };
 
 export const phraseSearch = async (phrase: string) => {
-  console.log(phrase);
+  const phraseArray: string[] = phrase.split("");
+  let list: Book[] = books.filter((item) =>
+    item.author.includes(phraseArray[0])
+  );
+  for (let i = 1; i < phraseArray.length; i++) {
+    let filteredList = list.filter((item) =>
+      item.author.includes(phraseArray[i])
+    );
+    list = filteredList;
+  }
   return [];
 };
 
